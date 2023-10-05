@@ -13,15 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('push_notifications', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        if (! Schema::hasTable('push_notification')) {
+            Schema::create('push_notification', function (Blueprint $table) {
+                $table->integer('id');
+                $table->string('type');
+                $table->string('image')->nullable();
+                $table->string('product_category_id')->nullable();
+                $table->boolean('status')->default(0);
+            });
+        }
 
-            $table->string('image')->nullable();
+        Schema::table('push_notification', function (Blueprint $table) {
             $table->string('type');
+            $table->string('image')->nullable();
             $table->string('product_category_id')->nullable();
             $table->boolean('status')->default(0);
-
-            $table->timestamps();
         });
     }
 
